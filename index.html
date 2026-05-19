@@ -6,12 +6,12 @@
     <title>S2 Math Tutorial: Total Surface Area of Cylinders</title>
     <style>
         :root {
-            --primary: #374151;
-            --secondary: #4b5563;
-            --background: #fbfaf7;
+            --primary: #131D4F;
+            --secondary: #254D70;
+            --background: #F7EFEB;
             --card-bg: #ffffff;
-            --text: #0f172a;
-            --accent: #6b7280; /* more neutral gray */
+            --text: #954C2E;
+            --accent: #254D70;
         }
 
         body {
@@ -124,12 +124,12 @@
 
         .solution {
             display: block;
-            background: #ffffff;
-            border-left: 4px solid var(--accent);
-            padding: 1rem;
-            border-radius: 6px;
+            background: transparent;
+            border-left: none;
+            border-top: 1px solid rgba(15,23,42,0.06);
+            padding: 0.75rem 0;
             margin-top: 1rem;
-            box-shadow: 0 1px 0 rgba(15,23,42,0.02);
+            color: var(--secondary);
         }
 
         .grid {
@@ -142,8 +142,8 @@
             .grid { grid-template-columns: 1fr; }
         }
 
-        .pro-card { border-top: 3px solid var(--accent); padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
-        .con-card { border-top: 3px solid #ef4444; padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
+        .pro-card { border-top: none; padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
+        .con-card { border-top: none; padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
 
         code {
             background: #f3f4f6;
@@ -154,10 +154,10 @@
         }
 
         blockquote {
-            background: #fbfaf7;
-            border-left: 4px solid rgba(55,65,81,0.06);
+            background: transparent;
+            border-left: none;
             margin: 0.75rem 0;
-            padding: 0.6rem 0.9rem;
+            padding: 0.4rem 0;
             font-style: normal;
             color: var(--secondary);
         }
@@ -167,7 +167,7 @@
 
     <header>
         <h1>Ch 11: Total Surface Areas of Right Circular Cylinders</h1>
-        <p>A Visual Tutorial Guide for S2 students</p>
+        <p>A Visual Tutorial Guide for Rigth Circular Cylinders</p>
         <div class="meta-info">
             <strong></strong> Lam Yat Nok &nbsp;|&nbsp; 2D 11 &nbsp;
         </div>
@@ -185,6 +185,226 @@
             
                         <div class="net-diagram">
                                 <img src="visual-formula.png" alt="Net diagram: cylinder unrolled" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+                        </div>
+
+                        <div class="cylinder-unfold" aria-hidden="false">
+                            <style>
+                                .cylinder-unfold .scroll-track { height: 300vh; position: relative; }
+                                .cylinder-unfold .sticky-viewport { position: sticky; top: 0; height: 100vh; display:flex; align-items:center; justify-content:center; }
+                                .cylinder-unfold .instructions { position: absolute; top: 4vh; text-align:center; pointer-events:none; z-index:10; }
+                                .cylinder-unfold canvas { display:block; max-width:100%; max-height:100%; }
+                                .cylinder-unfold .labels-layer { position:absolute; bottom:6vh; display:flex; gap:48px; font-size:1.05rem; font-weight:500; opacity:0; transform:translateY(10px); transition:all 0.35s ease; pointer-events:none; }
+                                .cylinder-unfold .labels-layer.visible { opacity:1; transform:translateY(0); }
+                            </style>
+
+                            <div class="scroll-track">
+                                <div class="sticky-viewport">
+                                    <div class="instructions">
+                                        <p style="margin:4px 0 0;color:#666;font-size:0.85rem">Scroll this page to unroll the cylinder, make it flat!  ↓</p>
+                                    </div>
+
+                                    <canvas id="unfoldCanvas" width="900" height="560" aria-label="Cylinder unfolding animation"></canvas>
+
+                                    <div class="labels-layer" id="unfoldGeometryLabels">
+                                        <div>Height = <strong>h</strong></div>
+                                        <div>Width = Circumference <strong>(2πr)</strong></div>
+                                        <div>Base Area = <strong>πr²</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                (function(){
+                                    const canvas = document.getElementById('unfoldCanvas');
+                                    if(!canvas) return;
+                                    const ctx = canvas.getContext('2d');
+                                    const geometryLabels = document.getElementById('unfoldGeometryLabels');
+
+                                    const BASE_RADIUS = 85;
+                                    const BASE_HEIGHT = 240;
+                                    const BASE_CIRCUMFERENCE = 2 * Math.PI * BASE_RADIUS;
+                                    let sR = BASE_RADIUS, sH = BASE_HEIGHT, sC = BASE_CIRCUMFERENCE;
+
+                                    function resizeCanvasToDisplaySize(){
+                                        const dpr = window.devicePixelRatio || 1;
+                                        const parent = canvas.parentElement || document.body;
+                                        const availW = Math.min(900, parent.clientWidth || 900);
+                                        const availH = Math.max(560, Math.round(window.innerHeight * 0.78));
+                                        canvas.style.width = availW + 'px';
+                                        canvas.style.height = availH + 'px';
+                                        canvas.width = Math.round(availW * dpr);
+                                        canvas.height = Math.round(availH * dpr);
+                                        ctx.setTransform(dpr,0,0,dpr,0,0);
+
+                                        const padding = 120;
+                                        const drawW = BASE_CIRCUMFERENCE + BASE_RADIUS * 2;
+                                        const drawH = BASE_HEIGHT + BASE_RADIUS * 2;
+                                        const scale = Math.min((availW - padding) / drawW, (availH - padding) / drawH, 1);
+                                        sR = BASE_RADIUS * scale;
+                                        sH = BASE_HEIGHT * scale;
+                                        sC = BASE_CIRCUMFERENCE * scale;
+                                    }
+                                    resizeCanvasToDisplaySize();
+                                    window.addEventListener('resize', resizeCanvasToDisplaySize);
+
+                                    function project(x,y,z,rotY,tiltX,centerX,centerY){
+                                        const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+                                        let x1 = x * cosY - z * sinY;
+                                        let z1 = x * sinY + z * cosY;
+                                        const cosX = Math.cos(tiltX), sinX = Math.sin(tiltX);
+                                        let y2 = y * cosX - z1 * sinX;
+                                        return { x: centerX + x1, y: centerY + y2 };
+                                    }
+
+                                    function drawLid(isTop, currentHingeX, currentHingeZ, progress, rotY, tiltX, centerX, centerY){
+                                        ctx.beginPath();
+                                        ctx.fillStyle = 'rgba(245,245,245,0.7)';
+                                        ctx.strokeStyle = '#222';
+                                        ctx.lineWidth = 1.8;
+
+                                        const totalLidSteps = 120;
+                                        const targetHingeAngle = Math.PI / 2;
+                                        const currentHingeAngle = targetHingeAngle * progress;
+
+                                        let localCenterP = null;
+                                        let localEdgeP = null;
+                                        const chosenVectorAngle = isTop ? (Math.PI * 0.25) : (Math.PI * 0.75);
+
+                                        for(let i=0;i<=totalLidSteps;i++){
+                                            const angle = (i/totalLidSteps) * Math.PI * 2;
+                                            const lx = sR * Math.sin(angle);
+                                            const lz = sR * Math.cos(angle);
+                                            const localY = 0;
+                                            const localZ = lz - sR;
+                                            const rotatedY = localY * Math.cos(currentHingeAngle) - localZ * Math.sin(currentHingeAngle);
+                                            const rotatedZ = localY * Math.sin(currentHingeAngle) + localZ * Math.cos(currentHingeAngle);
+                                            const finalX = lx + currentHingeX;
+                                            const finalY = (isTop ? -sH/2 : sH/2) + (isTop ? -rotatedY : rotatedY);
+                                            const finalZ = rotatedZ * (1 - progress) + currentHingeZ;
+                                            const p = project(finalX, finalY, finalZ, rotY, tiltX, centerX, centerY);
+                                            if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y);
+
+                                            if(i===0){
+                                                const cRotatedY = -(-sR) * Math.sin(currentHingeAngle);
+                                                const cRotatedZ = (-sR) * Math.cos(currentHingeAngle);
+                                                const centerYPos = (isTop ? -sH/2 : sH/2) + (isTop ? -cRotatedY : cRotatedY);
+                                                localCenterP = project(currentHingeX, centerYPos, (cRotatedZ - sR) * (1 - progress) + currentHingeZ, rotY, tiltX, centerX, centerY);
+                                            }
+
+                                            const step = (Math.PI*2)/totalLidSteps;
+                                            if(Math.abs(angle - chosenVectorAngle) <= step/2 && !localEdgeP) localEdgeP = p;
+                                        }
+
+                                        ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                                        if(localCenterP && localEdgeP && progress > 0.05){
+                                            ctx.save();
+                                            const alpha = Math.min(Math.max((progress - 0.05)/0.6,0),1);
+                                            ctx.globalAlpha = alpha;
+                                            ctx.beginPath(); ctx.strokeStyle='#000'; ctx.lineWidth=1.4; ctx.moveTo(localCenterP.x, localCenterP.y); ctx.lineTo(localEdgeP.x, localEdgeP.y); ctx.stroke();
+                                            ctx.beginPath(); ctx.fillStyle='#000'; ctx.arc(localEdgeP.x, localEdgeP.y,3.5,0,Math.PI*2); ctx.fill();
+                                            ctx.fillStyle='#000'; ctx.font='italic 14px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+                                            const dx = localEdgeP.x - localCenterP.x; const dy = localEdgeP.y - localCenterP.y; const len = Math.hypot(dx,dy); const nx = -dy/len; const ny = dx/len;
+                                            const markerOffset = Math.max(8, Math.round(sR * 0.14));
+                                            const tx = (localCenterP.x + localEdgeP.x)/2 + nx * markerOffset;
+                                            const ty = (localCenterP.y + localEdgeP.y)/2 + ny * markerOffset;
+                                            ctx.fillText('r', tx, ty);
+                                            if(!isTop && progress > 0.8){ ctx.globalAlpha = Math.min(Math.max((progress-0.8)/0.15,0),1); ctx.font='600 ' + Math.max(12, Math.round(sR * 0.18)) + 'px system-ui'; ctx.fillStyle='#444'; ctx.fillText('Base Area = πr²', localCenterP.x, localCenterP.y + Math.round(sR * 1.25)); }
+                                            ctx.restore();
+                                        }
+                                    }
+
+                                    function drawArrow(fromX, fromY, toX, toY){
+                                        const headlen = 8;
+                                        const angle = Math.atan2(toY - fromY, toX - fromX);
+                                        ctx.moveTo(fromX, fromY);
+                                        ctx.lineTo(toX, toY);
+                                        ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+                                        ctx.moveTo(toX, toY);
+                                        ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+                                    }
+
+                                    function drawScene(){
+                                        const scrollTop = window.scrollY;
+                                        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                                        let progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+                                        if (window.innerHeight + scrollTop >= document.documentElement.scrollHeight - 2) progress = 1;
+                                        const unfoldStart = 0.20;
+                                        const unfoldEnd = 0.42;
+                                        const unfoldP = Math.min(Math.max((progress - unfoldStart) / (unfoldEnd - unfoldStart), 0), 1);
+
+                                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                                        const centerX = (canvas.clientWidth || canvas.width) / 2; const centerY = (canvas.clientHeight || canvas.height) / 2;
+                                        const viewP = Math.min(progress / unfoldEnd, 1);
+                                        const tiltX = 0.4 * (1 - viewP);
+                                        const rotY = -0.5 * (1 - viewP);
+
+                                        if(unfoldP > 0.95) geometryLabels.classList.add('visible'); else geometryLabels.classList.remove('visible');
+
+                                        const steps = 120; const outlineTop = [], outlineBot = [];
+                                        let currentHingeX = 0, currentHingeZ = 0;
+                                        for(let i=0;i<=steps;i++){
+                                            const t = i/steps;
+                                            const finalLinearX = (t - 0.5) * sC;
+                                            const startingTheta = (t - 0.5) * Math.PI * 2;
+                                            const currentTheta = startingTheta * (1 - unfoldP);
+
+                                            const x3d = sR * Math.sin(currentTheta);
+                                            const z3d = sR * (Math.cos(currentTheta) - 1);
+
+                                            const finalX = x3d * (1 - unfoldP) + finalLinearX * unfoldP;
+                                            const finalZ = z3d * (1 - unfoldP);
+
+                                            outlineTop.push(project(finalX, -sH/2, finalZ, rotY, tiltX, centerX, centerY));
+                                            outlineBot.push(project(finalX, sH/2, finalZ, rotY, tiltX, centerX, centerY));
+                                            if(i === Math.floor(steps/2)){ currentHingeX = finalX; currentHingeZ = finalZ; }
+                                        }
+
+                                        ctx.beginPath(); ctx.fillStyle = '#f0f7ff'; ctx.strokeStyle = '#222'; ctx.lineWidth = 2; ctx.moveTo(outlineTop[0].x, outlineTop[0].y);
+                                        for(let i=1;i<outlineTop.length;i++) ctx.lineTo(outlineTop[i].x, outlineTop[i].y);
+                                        for(let i=outlineBot.length-1;i>=0;i--) ctx.lineTo(outlineBot[i].x, outlineBot[i].y);
+                                        ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                                        ctx.beginPath(); ctx.strokeStyle='rgba(208,225,253,0.4)'; ctx.lineWidth=1;
+                                        for(let i=2;i<outlineTop.length-1;i+=4){ ctx.moveTo(outlineTop[i].x, outlineTop[i].y); ctx.lineTo(outlineBot[i].x, outlineBot[i].y); }
+                                        ctx.stroke();
+
+                                        drawLid(true, currentHingeX, currentHingeZ, unfoldP, rotY, tiltX, centerX, centerY);
+                                        drawLid(false, currentHingeX, currentHingeZ, unfoldP, rotY, tiltX, centerX, centerY);
+
+                                        if(unfoldP < 0.95){
+                                            ctx.save();
+                                            ctx.globalAlpha = 1 - unfoldP;
+                                            ctx.strokeStyle = '#000';
+                                            ctx.lineWidth = 1.5;
+                                            ctx.fillStyle = '#000';
+                                            const leftProfileIndex = Math.floor(120 * 0.22);
+                                            const topFrameP = outlineTop[leftProfileIndex];
+                                            const botFrameP = outlineBot[leftProfileIndex];
+                                            const offsetAmount = 45 * (1 - unfoldP);
+                                            const fTopX = topFrameP.x - offsetAmount;
+                                            const fTopY = topFrameP.y;
+                                            const fBotX = botFrameP.x - offsetAmount;
+                                            const fBotY = botFrameP.y;
+                                            ctx.beginPath();
+                                            drawArrow(fTopX, fTopY, (fTopX + fBotX) / 2, (fTopY + fBotY) / 2 - 15);
+                                            drawArrow(fBotX, fBotY, (fTopX + fBotX) / 2, (fTopY + fBotY) / 2 + 15);
+                                            ctx.stroke();
+                                            ctx.font = 'italic bold ' + Math.max(14, Math.round(sR * 0.2)) + 'px system-ui';
+                                            ctx.textAlign = 'center';
+                                            ctx.textBaseline = 'middle';
+                                            ctx.fillText('h', (fTopX + fBotX) / 2, (fTopY + fBotY) / 2);
+                                            ctx.restore();
+                                        }
+
+                                        if(unfoldP < 0.99){ ctx.beginPath(); ctx.strokeStyle='#000'; ctx.lineWidth=2; ctx.moveTo(outlineTop[0].x, outlineTop[0].y); ctx.lineTo(outlineBot[0].x, outlineBot[0].y); ctx.moveTo(outlineTop[outlineTop.length-1].x, outlineTop[outlineTop.length-1].y); ctx.lineTo(outlineBot[outlineBot.length-1].x, outlineBot[outlineBot.length-1].y); ctx.stroke(); }
+                                    }
+
+                                    window.addEventListener('scroll', drawScene);
+                                    window.addEventListener('resize', drawScene);
+                                    drawScene();
+                                })();
+                            </script>
                         </div>
 
             <h3>Step by Step Breakdown:</h3>
@@ -222,19 +442,19 @@
                 </blockquote>
             </div>
 
-            <!-- Q.3 removed as requested -->
+            
         </section>
 
         <section id="pros-cons">
             <h2>4. Educational Analysis</h2>
             <div class="grid">
                 <div class="pro-card">
-                    <h4 style="color:#10b981; margin-top:0;">Pros</h4>
-                    <p style="font-size: 0.9rem;">Creates practice problems at different levels quickly, helping teachers provide targeted practice. Useful for turning geometric ideas into clear visual descriptions and simple net diagrams.</p>
+                    <h4 style="color:var(--primary); margin-top:0;">Pros</h4>
+                    <p style="font-size: 0.9rem;">Creates practice problems at different levels quickly, helping teachers provide practice.<p>
                 </div>
                 <div class="con-card">
-                    <h4 style="color:#ef4444; margin-top:0;">Cons</h4>
-                    <p style="font-size: 0.9rem;">Descriptions are conceptual and not derived from direct observation. Students should verify numerical results and any diagrams before using them as references.</p>
+                    <h4 style="color:var(--secondary); margin-top:0;">Cons</h4>
+                    <p style="font-size: 0.9rem;">The descriptions are not direct observations. AI dont really has the ability to see. Therefore, Students should verify the numerical results and charts before using them as a reference.</p>
                 </div>
             </div>
         </section>
@@ -252,6 +472,15 @@
             <blockquote>
                 Provide 3 concrete real-world comparisons or tactile exercises to make the curved side area (which unrolls into a rectangle of area 2𝜋rh) intuitive for students.
             </blockquote>
+        </section>
+
+        <section id="ai-usage">
+            <h2>6. AI Usage</h2>
+            <ul>
+                <li><strong>The cylinder unfolding animation</strong></li>
+                <li><strong>To generate the practice questions and solutions</strong></li>
+                <li><strong>For optimizing the UI and UX (experience)</strong></li>
+            </ul>
         </section>
     </main>
 
