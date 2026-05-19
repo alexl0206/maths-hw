@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2 Math Tutorial: Total Surface Area of Cylinders</title>
+    <style>
+        :root {
+            --primary: #374151;
+            --secondary: #4b5563;
+            --background: #fbfaf7;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --accent: #6b7280; /* more neutral gray */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        header {
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 1.25rem 1rem;
+            text-align: left;
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+            border-bottom: 1px solid rgba(15,23,42,0.04);
+        }
+
+        header h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; margin: 0 0 0.25rem 0; color: var(--text); }
+        header p { margin: 0; color: var(--secondary); }
+
+        .meta-info {
+            background-color: rgba(15,23,42,0.03);
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 14px;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            border: 1px solid rgba(15,23,42,0.03);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.03);
+            margin-bottom: 1.75rem;
+            border-left: 3px solid rgba(15,23,42,0.04);
+        }
+
+        h2 {
+            color: var(--text);
+            margin-top: 0;
+            border-bottom: 1px solid rgba(15,23,42,0.04);
+            padding-bottom: 0.5rem;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .net-diagram {
+            background: #ffffff;
+            color: var(--text);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow: hidden;
+            white-space: normal;
+            line-height: 1.25;
+            margin: 1rem 0;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .net-diagram img {
+            background: #ffffff;
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .formula-box {
+            background: #fff7ed;
+            border: 1px solid rgba(235, 200, 150, 0.25);
+            padding: 0.9rem 1rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0.75rem 0;
+            color: var(--text);
+        }
+
+        .btn {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid rgba(55,65,81,0.12);
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            background-color: rgba(55,65,81,0.04);
+            transform: translateY(-1px);
+        }
+
+        .solution {
+            display: none;
+            background: #ffffff;
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            box-shadow: 0 1px 0 rgba(15,23,42,0.02);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .pro-card { border-top: 3px solid var(--accent); padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
+        .con-card { border-top: 3px solid #ef4444; padding: 0.9rem; background: #fff; border-radius: 6px; box-shadow: 0 1px 0 rgba(15,23,42,0.02); }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+            font-size: 0.95em;
+        }
+
+        blockquote {
+            background: #fbfaf7;
+            border-left: 4px solid rgba(55,65,81,0.06);
+            margin: 0.75rem 0;
+            padding: 0.6rem 0.9rem;
+            font-style: normal;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Ch 11: Total Surface Areas of Right Circular Cylinders</h1>
+        <p>A Visual Tutorial Guide for S2 students</p>
+        <div class="meta-info">
+            <strong></strong> Lam Yat Nok &nbsp;|&nbsp; 2D 11 &nbsp;
+        </div>
+    </header>
+
+    <main>
+        <section id="ai-tool">
+            <h2>1. About this Resource</h2>
+            <p>This website provides practice questions with step by step solutions.</p>
+        </section>
+
+        <section id="explanation">
+            <h2>2. Visualizing the Formula</h2>
+            <p>Struggling to remember formulas? Let's take a 3D cylinder and "unroll" it flat into its 2D geometry net[cite: 4, 5, 12]:</p>
+            
+                        <div class="net-diagram">
+                                <img src="visual-formula.png" alt="Net diagram: cylinder unrolled" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+                        </div>
+
+            <h3>Step-by-Step Breakdown:</h3>
+            <ul>
+                <li><strong>The Two Circular Bases:</strong> A cylinder has a top and a bottom circle. The area of one circle is <code>𝜋r²</code>. For both, it is <strong><code>2𝜋r²</code></strong>.</li>
+                <li><strong>The Curved Side Surface:</strong> When unrolled, the side forms a perfect <strong>rectangle</strong>. Its height is <code>h</code>, and its length wraps perfectly around the circle, meaning the length equals the circle's circumference (<code>2𝜋r</code>). Therefore, the curved surface area is <strong><code>2𝜋rh</code></strong>.</li>
+            </ul>
+
+            <div class="formula-box">
+                Total Surface Area = 2𝜋r² + 2𝜋rh = 2𝜋r(r + h)
+            </div>
+        </section>
+
+        <section id="problems">
+            <h2>3. Some Practices</h2>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h4>Q.1</h4>
+                <p>A solid right circular cylinder has a base radius of 7 cm and a height of 10 cm. Find its total surface area in terms of 𝜋.</p>
+                <button class="btn" onclick="toggleSolution('sol1')">Reveal Comprehensive Solution</button>
+                <div id="sol1" class="solution">
+                    <p><strong>Step 1:</strong> Identify dimensions: Radius (r) = 7 cm, Height (h) = 10 cm.</p>
+                    <p><strong>Step 2:</strong> Apply the formula: TSA = 2𝜋r² + 2𝜋rh</p>
+                    <p><strong>Step 3:</strong> Substitute: TSA = 2𝜋(7)² + 2𝜋(7)(10) = 98𝜋 + 140𝜋 = <strong>238𝜋 cm²</strong></p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Q.2</h4>
+                <p>A cylindrical sports drink can has diameter 6 cm and height 12 cm. Calculate the total surface area of the can and round your answer to 3 significant figures.</p>
+                <button class="btn" onclick="toggleSolution('sol2')">Reveal Comprehensive Solution</button>
+                <div id="sol2" class="solution">
+                    <p><strong>Step 1:</strong> Find the radius from diameter: r = 6 / 2 = 3 cm.</p>
+                    <p><strong>Step 2:</strong> Use the factored formula: TotalSurfaceArea = 2𝜋r(r + h)</p>
+                    <p><strong>Step 3:</strong> Caltalculate: TSA = 2 × 3.1416 × 3 × (3 + 12)</p>
+                    <p><strong>Step 4:</strong> TSA = 18.8496 × 15 = 282.744 cm² ≈ <strong>282.7 cm²</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons">
+            <h2>4. Educational Analysis</h2>
+            <div class="grid">
+                <div class="pro-card">
+                    <h4 style="color:#10b981; margin-top:0;">Pros</h4>
+                    <p style="font-size: 0.9rem;">Creates practice problems at different levels quickly, helping teachers provide targeted practice. Useful for turning geometric ideas into clear visual descriptions and simple net diagrams.</p>
+                </div>
+                <div class="con-card">
+                    <h4 style="color:#ef4444; margin-top:0;">Cons</h4>
+                    <p style="font-size: 0.9rem;">Descriptions are conceptual and not derived from direct observation. Students should verify numerical results and any diagrams before using them as references.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mr-lo">
+            <h2>5. Teacher Manual for Mr. Lo</h2>
+            <p>Instructional templates to help build secondary school math resources:</p>
+            
+            <h4>Template A: Building Math Quizzes</h4>
+            <blockquote>
+                Generate a 3-question quiz targeting Total Surface Area of Cylinders: Question 1 should be a direct calculation; Question 2 should ask students to find a missing height given the total area; Question 3 should be a real-world packaging scenario. Include clear marking schemes.
+            </blockquote>
+
+            <h4>Template B: Creating Specific Math Analogies</h4>
+            <blockquote>
+                Provide 3 concrete real-world comparisons or tactile exercises to make the curved side area (which unrolls into a rectangle of area 2𝜋rh) intuitive for students.
+            </blockquote>
+        </section>
+    </main>
+
+    <script>
+        function toggleSolution(id) {
+            const sol = document.getElementById(id);
+            if(sol.style.display === "block") {
+                sol.style.display = "none";
+            } else {
+                sol.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
