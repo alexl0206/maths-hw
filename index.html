@@ -223,6 +223,25 @@
                     <p><strong>Step 4:</strong> TSA = 18.8496 × 15 = 282.744 cm² ≈ <strong>282.7 cm²</strong></p>
                 </div>
             </div>
+
+            <div style="margin-top: 1.5rem;">
+                <h4>Q.3 — Meta Recast</h4>
+                <p>Practice recasting the same information in different algebraic forms.</p>
+                <ol>
+                    <li>Given the total surface area of a cylinder is <strong>T</strong> and the radius is <strong>r</strong>, express the height <strong>h</strong> in terms of <strong>T</strong> and <strong>r</strong>.</li>
+                    <li>Given <strong>T</strong> and height <strong>h</strong>, derive the equation(s) you would solve to find the radius <strong>r</strong> (leave in algebraic form or show the quadratic formula step).</li>
+                </ol>
+                <button class="btn" onclick="toggleSolution('sol3')">Reveal Meta Recast Solution</button>
+                <div id="sol3" class="solution">
+                    <p><strong>Solution (1):</strong> Start from the formula <code>T = 2πr(r + h)</code>. Solve for <code>h</code>:</p>
+                    <p>h = T / (2πr) − r</p>
+
+                    <p><strong>Solution (2):</strong> Given <code>T</code> and <code>h</code>, rearrange to find <code>r</code>:</p>
+                    <p>Divide both sides by <code>2π</code>: <code>r(r + h) = T / (2π)</code>. This expands to <code>r² + hr − T/(2π) = 0</code>, a quadratic in <code>r</code>. Use the quadratic formula:</p>
+                    <p>r = (−h ± √(h² + 4·T/(2π))) / 2 = (−h ± √(h² + 2T/π)) / 2</p>
+                    <p>Choose the positive root for a physical radius.</p>
+                </div>
+            </div>
         </section>
 
         <section id="pros-cons">
