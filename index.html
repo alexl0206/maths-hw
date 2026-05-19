@@ -123,7 +123,7 @@
         }
 
         .solution {
-            display: none;
+            display: block;
             background: #ffffff;
             border-left: 4px solid var(--accent);
             padding: 1rem;
@@ -204,24 +204,22 @@
             <div style="margin-bottom: 1.5rem;">
                 <h4>Q.1</h4>
                 <p>A solid right circular cylinder has a base radius of 7 cm and a height of 10 cm. Find its total surface area in terms of 𝜋.</p>
-                <button class="btn" onclick="toggleSolution('sol1')">Reveal Comprehensive Solution</button>
-                <div id="sol1" class="solution">
+                <blockquote id="sol1" class="solution">
                     <p><strong>Step 1:</strong> Identify dimensions: Radius (r) = 7 cm, Height (h) = 10 cm.</p>
                     <p><strong>Step 2:</strong> Apply the formula: TSA = 2𝜋r² + 2𝜋rh</p>
                     <p><strong>Step 3:</strong> Substitute: TSA = 2𝜋(7)² + 2𝜋(7)(10) = 98𝜋 + 140𝜋 = <strong>238𝜋 cm²</strong></p>
-                </div>
+                </blockquote>
             </div>
 
             <div>
                 <h4>Q.2</h4>
                 <p>A cylindrical sports drink can has diameter 6 cm and height 12 cm. Calculate the total surface area of the can and round your answer to 3 significant figures.</p>
-                <button class="btn" onclick="toggleSolution('sol2')">Reveal Comprehensive Solution</button>
-                <div id="sol2" class="solution">
+                <blockquote id="sol2" class="solution">
                     <p><strong>Step 1:</strong> Find the radius from diameter: r = 6 / 2 = 3 cm.</p>
                     <p><strong>Step 2:</strong> Use the factored formula: TotalSurfaceArea = 2𝜋r(r + h)</p>
                     <p><strong>Step 3:</strong> Caltalculate: TSA = 2 × 3.1416 × 3 × (3 + 12)</p>
                     <p><strong>Step 4:</strong> TSA = 18.8496 × 15 = 282.744 cm² ≈ <strong>282.7 cm²</strong></p>
-                </div>
+                </blockquote>
             </div>
 
             <div style="margin-top: 1.5rem;">
@@ -231,8 +229,7 @@
                     <li>Given the total surface area of a cylinder is <strong>T</strong> and the radius is <strong>r</strong>, express the height <strong>h</strong> in terms of <strong>T</strong> and <strong>r</strong>.</li>
                     <li>Given <strong>T</strong> and height <strong>h</strong>, derive the equation(s) you would solve to find the radius <strong>r</strong> (leave in algebraic form or show the quadratic formula step).</li>
                 </ol>
-                <button class="btn" onclick="toggleSolution('sol3')">Reveal Meta Recast Solution</button>
-                <div id="sol3" class="solution">
+                <blockquote id="sol3" class="solution">
                     <p><strong>Solution (1):</strong> Start from the formula <code>T = 2πr(r + h)</code>. Solve for <code>h</code>:</p>
                     <p>h = T / (2πr) − r</p>
 
@@ -240,7 +237,7 @@
                     <p>Divide both sides by <code>2π</code>: <code>r(r + h) = T / (2π)</code>. This expands to <code>r² + hr − T/(2π) = 0</code>, a quadratic in <code>r</code>. Use the quadratic formula:</p>
                     <p>r = (−h ± √(h² + 4·T/(2π))) / 2 = (−h ± √(h² + 2T/π)) / 2</p>
                     <p>Choose the positive root for a physical radius.</p>
-                </div>
+                </blockquote>
             </div>
         </section>
 
@@ -260,7 +257,7 @@
 
         <section id="mr-lo">
             <h2>5. Teacher Manual for Mr. Lo</h2>
-            <p>Instructional templates to help build secondary school math resources:</p>
+            <p>Prompt templates to help build secondary school math questions:</p>
             
             <h4>Template A: Building Math Quizzes</h4>
             <blockquote>
@@ -274,15 +271,6 @@
         </section>
     </main>
 
-    <script>
-        function toggleSolution(id) {
-            const sol = document.getElementById(id);
-            if(sol.style.display === "block") {
-                sol.style.display = "none";
-            } else {
-                sol.style.display = "block";
-            }
-        }
-    </script>
+    
 </body>
 </html>
